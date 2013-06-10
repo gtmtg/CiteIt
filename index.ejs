@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  
+    <meta charset="utf-8">
+    <title>CiteIt</title>
+    <meta name="viewport" content="width=940">
+    <meta name="author" content="Mihir Garimella">
+    <meta name="description" content="CiteIt makes it easy to create accurate MLA-formatted bibliographies.">
+
+    <link rel="canonical" href="http://www.citeit.co">
+
+    <link href="stylesheets/bootstrap.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+  </head>
+
+  <body>
+
+    <div class="block container">
+      <h1>CiteIt makes it easy to create <i>accurate MLA-formatted bibliographies</i>.</h1>
+      
+      <div class="input-append">
+        <input type="text" placeholder="Type a bibliography name. If it doesn't exist, we'll create it for you." id="name" onkeydown="if (event.keyCode == 13) document.getElementById('submit').click()" />
+        <button class="btn" id="submit">Create</button>
+      </div>
+      
+      <div class="bottom">
+        <p><span class="credits">Created by <a href="http://www.mihirgarimella.com/" target="_blank">Mihir Garimella</a>. Built with <a href="http://twitter.github.com/bootstrap/" target="_blank">Bootstrap</a>.</span></p>
+      </div>
+    </div>
+
+  </body>
+  
+  <script src="javascripts/jquery.js"></script>
+  <script type="text/javascript">
+    $('#name').focus();
+    
+    $(function() {
+      $('#submit').click(function() {
+        window.location.href = '/' + $('#name').val().replace(/[^a-zA-Z0-9_-]/g, '');
+      });
+    });
+  </script>
+  
+</html>

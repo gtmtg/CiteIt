@@ -1,0 +1,147 @@
+@font-face {
+  font-family: 'ProximaNova';
+  src: url('../fonts/ProximaNova.ttf');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  src: url('../fonts/ProximaNova-Italic.ttf');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  src: url('../fonts/ProximaNova-Light.ttf');
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  src: url('../fonts/ProximaNova-LightItalic.ttf');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  src: url('../fonts/ProximaNova-Semibold.ttf');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  src: url('../fonts/ProximaNova-Bold.ttf');
+  font-weight: bold;
+}
+body {
+  color: #555;
+  font-family: 'ProximaNova', sans-serif;
+}
+.block.container {
+  margin: 0 auto 0 auto;
+  padding: 160px 135px 160px 135px;
+  width: 670px;
+}
+.block h1 {
+  font-weight: 300;
+  text-align: center;
+  font-size: 20px;
+  line-height: 20px;
+  margin-bottom: 30px;
+}
+.block.container img {
+  margin: 30px 0 30px 0;
+  border-radius: 8px;
+}
+.block.container input {
+  border-radius: 8px 0 0 8px !important;
+  width: 554px;
+  font-weight: 300;
+  font-size: 20px !important;
+  line-height: 25px;
+  padding: 18px 14px 18px 14px !important;
+}
+.block.container button {
+  font-weight: 300;
+  font-size: 20px !important;
+  padding: 18px 14px 18px 14px !important;
+  border-radius: 0 8px 8px 0 !important;
+}
+.bottom {
+  position: absolute;
+  text-align: center;
+  margin: 0 auto 0 auto;
+  width: 670px;
+  bottom: 10px;
+}
+.bottom p {
+  color: #cacaca;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 14px;
+}
+.bottom a {
+  color: #aaa;
+}
+.top {
+  width: 100%;
+  background: #c40000;
+  background-image: -webkit-linear-gradient(top, #dd0000 0, #aa0000 100%);
+  background-image: linear-gradient(top, #dd0000 0, #aa0000 100%);
+  padding: 10px 0 10px 0;
+  min-width: 940px;
+  border-bottom: 6px solid #990000;
+}
+#top-link .top {
+  cursor: pointer;
+}
+.top h1 {
+  font-weight: 400;
+  text-align: center;
+  font-size: 22px;
+  line-height: 22px;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+input, button, select {
+  font-family: inherit;
+}
+#citation {
+  word-break: normal;
+  word-wrap: normal;
+  background: #fff;
+  color: #333;
+  display: block;
+  padding: 9.5px;
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: pre;
+  white-space: pre-wrap;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.main {
+  padding: 46px 0 30px 0;
+}
+.controls-row select {
+  margin-right: 20px;
+}
+.controls-row .btn {
+  float: left;
+  width: 114px;
+  margin-left: 20px;
+}
+.controls-row {
+  margin-bottom: 2px;
+}
+.source {
+  margin-bottom: 28px;
+}
+#top-link, #top-link:visited, #top-link:active, #top-link:hover {
+  text-decoration: none;
+  outline: none;
+}
+.instructions {
+  font-size: 14px;
+  margin-left: 12px;
+}

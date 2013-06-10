@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  
+    <meta charset="utf-8">
+    <title><%= bibliography._id %> — CiteIt</title>
+    <meta name="viewport" content="width=940">
+    <meta name="author" content="Mihir Garimella">
+    <meta name="description" content="CiteIt makes it easy to create accurate MLA-formatted bibliographies.">
+
+    <link rel="canonical" href="http://www.citeit.co">
+
+    <link href="stylesheets/bootstrap.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+  </head>
+
+  <body>
+
+    <div id="top">
+      <% if (bibliography.citation == '') { %>
+        <div class="top">
+          <h1><%= bibliography._id %></h1>
+        </div>
+      <% } else { %>
+        <a data-toggle="modal" data-target="#bibliography-modal" id="top-link">
+          <div class="top">
+            <h1><%= bibliography._id %><span class="instructions">(click to see formatted bibliography)</span></h1>
+          </div>
+        </a>
+      <% } %>
+    </div>
+
+    <div id="bibliography-modal" class="modal hide fade">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal" href="#">&times;</a>
+        <h3>Bibliography</h3>
+      </div>
+      <div class="modal-body">
+        <div id="citation"><%- bibliography.citation %></div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn pull-left" href="#" id="select">Select Text</a>
+        <a class="btn" data-dismiss="modal" href="#">Close</a>
+      </div>
+    </div>
+
+    <form class="main container" action="/save" method="post">
+        <input type="hidden" name="name" value="<%= bibliography._id %>"></input>
+        <div id="sources">
+        <%
+        var sources = bibliography.sources.split('~');
+        
+        for (var i = 0; i < sources.length; i++) {
+          var rowNumberInt = i + 1;
+          var rowNumber = rowNumberInt.toString();
+          
+          var source = sources[i];
+          
+          var parts = source.split('|');
+          
+          if (parts[0] == 'Book with an Author') {
+        %>
+          <div class="source" id="source-<%= rowNumber %>">
+            <div class="controls controls-row">
+              <select class="span3 type-select" id="type-select-<%= rowNumber %>" name="1-<%= rowNumber %>">
+                <option selected="selected">Book with an Author</option>
+                <option>Book with an Editor</option>
+                <option>General Encyclopedia</option>
+                <option>Specialty Encyclopedia, Dictionary, or Other Reference Book</option>
+                <option>Multi-Volume Specialty Encyclopedia</option>
+                <option>Magazine or Newspaper</option>
+                <option>Website</option>
+                <option>Media from the Web</option>
+                <option>Interview</option>
+                <option>Video Recording or DVD</option>
+              </select>
+              <div id="first-row-<%= rowNumber %>">
+                <input id="first-name-<%= rowNumber %>" class="span2" type="text" placeholder="Author First Name" name="2-<%= rowNumber %>" value="<%= parts[1] %>"></input><input id="last-name-<%= rowNumber %>" class="span2" type="text" placeholder="Author Last Name" name="3-<%= rowNumber %>" value="<%= parts[2] %>"></input><input id="title-<%= rowNumber %>" class="span3" type="text" placeholder="Title" name="4-<%= rowNumber %>" value="<%= parts[3] %>"></input>
+              </div>
+              <a class="btn delete-btn disabled" href="#" id="delete-btn-<%= rowNumber %>"></span>Delete</a>
+            </div>
+            <div class="controls controls-row">
+              <div id="second-row-<%= rowNumber %>">
+                <input id="pub-city-<%= rowNumber %>" class="span3" type="text" placeholder="Publication City" name="5-<%= rowNumber %>" value="<%= parts[4] %>"></input><input id="pub-name-<%= rowNumber %>" class="span5" type="text" placeholder="Publisher" name="6-<%= rowNumber %>"  value="<%= parts[5] %>"></input><input id="pub-date-<%= rowNumber %>" class="span2" type="text" placeholder="Year of Publication" name="7-<%= rowNumber %>" value="<%= parts[6] %>"></input>
+              </div>
+              <a class="btn add-btn" href="#" id="add-btn-<%= rowNumber %>"><span class="space"></span>Add a Source</a>
+            </div>
+          </div>
+        <% } else if (parts[0] == 'Book with an Editor') { %>
+          <div class="source" id="source-<%= rowNumber %>">
+            <div class="controls controls-row">
+              <select class="span3 type-select" id="type-select-<%= rowNumber %>" name="1-<%= rowNumber %>">
+                <option>Book with an Author</option>
+                <option selected="selected">Book with an Editor</option>
+                <option>General Encyclopedia</option>
+                <option>Specialty Encyclopedia, Dictionary, or Other Reference Book</option>
+                <option>Multi-Volume Specialty Encyclopedia</option>
+                <option>Magazine or Newspaper</option>
+                <option>Website</option>
+                <option>Media from the Web</option>
+                <option>Interview</option>
+                <option>Video Recording or DVD</option>
+              </select>
+              <div id="first-row-<%= rowNumber %>">
+                <input id="first-name-<%= rowNumber %>" class="span2" type="text" placeholder="Editor First Name" name="2-<%= rowNumber %>" value="<%= parts[1] %>"></input><input id="last-name-<%= rowNumber %>" class="span2" type="text" placeholder="Editor Last Name" name="3-<%= rowNumber %>" value="<%= parts[2] %>"></input><input id="title-<%= rowNumber %>" class="span3" type="text" placeholder="Title" name="4-<%= rowNumber %>" value="<%= parts[3] %>"></input>
+              </div>
+              <a class="btn delete-btn disabled" href="#" id="delete-btn-<%= rowNumber %>"></span>Delete</a>
+            </div>
+            <div class="controls controls-row">
+              <div id="second-row-<%= rowNumber %>">
+                <input id="pub-city-<%= rowNumber %>" class="span3" type="text" placeholder="Publication City" name="5-<%= rowNumber %>" value="<%= parts[4] %>"></input><input id="pub-name-<%= rowNumber %>" class="span5" type="text" placeholder="Publisher" name="6-<%= rowNumber %>"  value="<%= parts[5] %>"></input><input id="pub-date-<%= rowNumber %>" class="span2" type="text" placeholder="Year of Publication" name="7-<%= rowNumber %>" value="<%= parts[6] %>"></input>
+              </div>
+              <a class="btn add-btn" href="#" id="add-btn-<%= rowNumber %>"><span class="space"></span>Add a Source</a>
+            </div>
+          </div>
+        <% } else if (parts[0] == 'General Encyclopedia') { %>
+          <div class="source" id="source-<%= rowNumber %>">
+            <div class="controls controls-row">
+              <select class="span3 type-select" id="type-select-<%= rowNumber %>" name="1-<%= rowNumber %>">
+                <option>Book with an Author</option>
+                <option>Book with an Editor</option>
+                <option selected="selected">General Encyclopedia</option>
+                <option>Specialty Encyclopedia, Dictionary, or Other Reference Book</option>
+                <option>Multi-Volume Specialty Encyclopedia</option>
+                <option>Magazine or Newspaper</option>
+                <option>Website</option>
+                <option>Media from the Web</option>
+                <option>Interview</option>
+                <option>Video Recording or DVD</option>
+              </select>
+              <div id="first-row-<%= rowNumber %>">
+                <input id="title-<%= rowNumber %>" class="span7" type="text" placeholder="Title of Article" name="2-<%= rowNumber %>" value="<%= parts[1] %>"></input>
+              </div>
+              <a class="btn delete-btn disabled" href="#" id="delete-btn-<%= rowNumber %>"></span>Delete</a>
+            </div>
+            <div class="controls controls-row">
+              <div id="second-row-<%= rowNumber %>">
+                <input id="pub-city-<%= rowNumber %>" class="span3" type="text" placeholder="Publication City" name="5-<%= rowNumber %>" value="<%= parts[4] %>"></input><input id="pub-name-<%= rowNumber %>" class="span5" type="text" placeholder="Publisher" name="6-<%= rowNumber %>"  value="<%= parts[5] %>"></input><input id="pub-date-<%= rowNumber %>" class="span2" type="text" placeholder="Year of Publication" name="7-<%= rowNumber %>" value="<%= parts[6] %>"></input>
+              </div>
+              <a class="btn add-btn" href="#" id="add-btn-<%= rowNumber %>"><span class="space"></span>Add a Source</a>
+            </div>
+          </div>
+        <% } else if (parts[0] == 'Specialty Encyclopedia, Dictionary, or Other Reference Book') { %>
+          <div class="source" id="source-<%= rowNumber %>">
+            <div class="controls controls-row">
+              <select class="span3 type-select" id="type-select-<%= rowNumber %>" name="1-<%= rowNumber %>">
+                <option>Book with an Author</option>
+                <option>Book with an Editor</option>
+                <option>General Encyclopedia</option>
+                <option selected="selected">Specialty Encyclopedia, Dictionary, or Other Reference Book</option>
+                <option>Multi-Volume Specialty Encyclopedia</option>
+                <option>Magazine or Newspaper</option>
+                <option>Website</option>
+                <option>Media from the Web</option>
+                <option>Interview</option>
+                <option>Video Recording or DVD</option>
+              </select>
+              <div id="first-row-<%= rowNumber %>">
+                <input id="first-name-<%= rowNumber %>" class="span2" type="text" placeholder="Author First Name" name="2-<%= rowNumber %>" value="<%= parts[1] %>"></input><input id="last-name-<%= rowNumber %>" class="span2" type="text" placeholder="Author Last Name" name="3-<%= rowNumber %>" value="<%= parts[2] %>"></input><input id="title-<%= rowNumber %>" class="span3" type="text" placeholder="Title of Article" name="4-<%= rowNumber %>" value="<%= parts[3] %>"></input>
+              </div>
+              <a class="btn delete-btn disabled" href="#" id="delete-btn-<%= rowNumber %>"></span>Delete</a>
+            </div>
+            <div class="controls controls-row">
+              <div id="second-row-<%= rowNumber %>">
+                <input id="collection-title-<%= rowNumber %>" class="span3" type="text" placeholder="Title of Reference Book" name="5-<%= rowNumber %>" value="<%= parts[4] %>"></input><input id="pub-city-<%= rowNumber %>" class="span2" type="text" placeholder="Publication City" name="6-<%= rowNumber %>" value="<%= parts[5] %>"></input><input id="pub-name-<%= rowNumber %>" class="span3" type="text" placeholder="Publisher" name="7-<%= rowNumber %>" value="<%= parts[6] %>"></input><input id="pub-date-<%= rowNumber %>" class="span2" type="text" placeholder="Year of Publication" name="8-<%= rowNumber %>" value="<%= parts[7] %>"></input>
+              </div>
+              <a class="btn add-btn" href="#" id="add-btn-<%= rowNumber %>"><span class="space"></span>Add a Source</a>
+            </div>
+          </div>
+        <% } else if (parts[0] == 'Multi-Volume Specialty Encyclopedia') { %>
+          <div class="source" id="source-<%= rowNumber %>">
+            <div class="controls controls-row">
+              <select class="span3 type-select" id="type-select-<%= rowNumber %>" name="1-<%= rowNumber %>">
+                <option>Book with an Author</option>
+                <option>Book with an Editor</option>
+                <option>General Encyclopedia</option>
+                <option>Specialty Encyclopedia, Dictionary, or Other Reference Book</option>
+                <option selected="selected">Multi-Volume Specialty Encyclopedia</option>
+                <option>Magazine or Newspaper</option>
+                <option>Website</option>
+                <option>Media from the Web</option>
+                <option>Interview</option>
+                <option>Video Recording or DVD</option>
+              </select>
+              <div id="first-row-<%= rowNumber %>">
+                <input id="first-name-<%= rowNumber %>" class="span2" type="text" placeholder="Author First Name" name="2-<%= rowNumber %>" value="<%= parts[1] %>"></input><input id="last-name-<%= rowNumber %>" class="span2" type="text" placeholder="Author Last Name" name="3-<%= rowNumber %>" value="<%= parts[2] %>"></input><input id="title-<%= rowNumber %>" class="span3" type="text" placeholder="Title of Article" name="4-<%= rowNumber %>" value="<%= parts[3] %>"></input>
+              </div>
+              <a class="btn delete-btn disabled" href="#" id="delete-btn-<%= rowNumber %>"></span>Delete</a>
+            </div>
+            <div class="controls controls-row">
+              <div id="second-row-<%= rowNumber %>">
+                <input id="pub-city-<%= rowNumber %>" class="span2" type="text" placeholder="Publication City" name="5-<%= rowNumber %>" value="<%= parts[4] %>"></input><input id="pub-name-<%= rowNumber %>" class="span2" type="text" placeholder="Publisher" name="6-<%= rowNumber %>" value="<%= parts[5] %>"></input><input id="pub-date-<%= rowNumber %>" class="span2" type="text" placeholder="Year of Publication" name="7-<%= rowNumber %>" value="<%= parts[6] %>"></input><input id="volume-<%= rowNumber %>" class="span2" type="text" placeholder="Volume" name="8-<%= rowNumber %>" value="<%= parts[7] %>"></input><input id="collection-title-<%= rowNumber %>" class="span2" type="text" placeholder="Title of Series" name="9-<%= rowNumber %>" value="<%= parts[8] %>"></input>
+              </div>
+              <a class="btn add-btn" href="#" id="add-btn-<%= rowNumber %>"><span class="space"></span>Add a Source</a>
+            </div>
+          </div>
+        <% } else if (parts[0] == 'Magazine or Newspaper') { %>
+          <div class="source" id="source-<%= rowNumber %>">
+            <div class="controls controls-row">
+              <select class="span3 type-select" id="type-select-<%= rowNumber %>" name="1-<%= rowNumber %>">
+                <option>Book with an Author</option>
+                <option>Book with an Editor</option>
+                <option>General Encyclopedia</option>
+                <option>Specialty Encyclopedia, Dictionary, or Other Reference Book</option>
+                <option>Multi-Volume Specialty Encyclopedia</option>
+                <option selected="selected">Magazine or Newspaper</option>
+                <option>Website</option>
+                <option>Media from the Web</option>
+                <option>Interview</option>
+                <option>Video Recording or DVD</option>
+              </select>
+              <div id="first-row-<%= rowNumber %>">
+                <input id="first-name-<%= rowNumber %>" class="span2" type="text" placeholder="Author First Name" name="2-<%= rowNumber %>" value="<%= parts[1] %>"></input><input id="last-name-<%= rowNumber %>" class="span2" type="text" placeholder="Author Last Name" name="3-<%= rowNumber %>" value="<%= parts[2] %>"></input><input id="title-<%= rowNumber %>" class="span3" type="text" placeholder="Title of Article" name="4-<%= rowNumber %>" value="<%= parts[3] %>"></input>
+              </div>
+              <a class="btn delete-btn disabled" href="#" id="delete-btn-<%= rowNumber %>"></span>Delete</a>
+            </div>
+            <div class="controls controls-row">
+              <div id="second-row-<%= rowNumber %>">
+                <input id="collection-title-<%= rowNumber %>" class="span5" type="text" placeholder="Title of Magazine" name="5-<%= rowNumber %>" value="<%= parts[4] %>"></input><input id="pub-date-<%= rowNumber %>" class="span3" type="text" placeholder="Date Published" name="6-<%= rowNumber %>" value="<%= parts[5] %>"></input><input id="pages-<%= rowNumber %>" class="span2" type="text" placeholder="Page Numbers" name="7-<%= rowNumber %>" value="<%= parts[6] %>"></input>
+              </div>
+              <a class="btn add-btn" href="#" id="add-btn-<%= rowNumber %>"><span class="space"></span>Add a Source</a>
+            </div>
+          </div>
+        <% } else if (parts[0] == 'Website') { %>
+          <div class="source" id="source-<%= rowNumber %>">
+            <div class="controls controls-row">
+              <select class="span3 type-select" id="type-select-<%= rowNumber %>" name="1-<%= rowNumber %>">
+                <option>Book with an Author</option>
+                <option>Book with an Editor</option>
+                <option>General Encyclopedia</option>
+                <option>Specialty Encyclopedia, Dictionary, or Other Reference Book</option>
+                <option>Multi-Volume Specialty Encyclopedia</option>
+                <option>Magazine or Newspaper</option>
+                <option selected="selected">Website</option>
+                <option>Media from the Web</option>
+                <option>Interview</option>
+                <option>Video Recording or DVD</option>
+              </select>
+              <div id="first-row-<%= rowNumber %>">
+                <input id="first-name-<%= rowNumber %>" class="span2" type="text" placeholder="Creator First Name" name="2-<%= rowNumber %>" value="<%= parts[1] %>"></input><input id="last-name-<%= rowNumber %>" class="span2" type="text" placeholder="Creator Last Name" name="3-<%= rowNumber %>" value="<%= parts[2] %>"></input><input id="title-<%= rowNumber %>" class="span3" type="text" placeholder="Title of Page" name="4-<%= rowNumber %>" value="<%= parts[3] %>"></input>
+              </div>
+              <a class="btn delete-btn disabled" href="#" id="delete-btn-<%= rowNumber %>"></span>Delete</a>
+            </div>
+            <div class="controls controls-row">
+              <div id="second-row-<%= rowNumber %>">
+                <input id="collection-title-<%= rowNumber %>" class="span3" type="text" placeholder="Title of Website" name="5-<%= rowNumber %>" value="<%= parts[4] %>"></input><input id="pub-date-<%= rowNumber %>" class="span2" type="text" placeholder="Date Last Updated" name="6-<%= rowNumber %>" value="<%= parts[5] %>"></input><input id="pub-name-<%= rowNumber %>" class="span3" type="text" placeholder="Organization Responsible" name="7-<%= rowNumber %>" value="<%= parts[6] %>"></input><input id="view-date-<%= rowNumber %>" class="span2" type="text" placeholder="Date Viewed" name="8-<%= rowNumber %>" value="<%= parts[7] %>"></input>
+              </div>
+              <a class="btn add-btn" href="#" id="add-btn-<%= rowNumber %>"><span class="space"></span>Add a Source</a>
+            </div>
+          </div>
+        <% } else if (parts[0] == 'Media from the Web') { %>
+          <div class="source" id="source-<%= rowNumber %>">
+            <div class="controls controls-row">
+              <select class="span3 type-select" id="type-select-<%= rowNumber %>" name="1-<%= rowNumber %>">
+                <option>Book with an Author</option>
+                <option>Book with an Editor</option>
+                <option>General Encyclopedia</option>
+                <option>Specialty Encyclopedia, Dictionary, or Other Reference Book</option>
+                <option>Multi-Volume Specialty Encyclopedia</option>
+                <option>Magazine or Newspaper</option>
+                <option>Website</option>
+                <option selected="selected">Media from the Web</option>
+                <option>Interview</option>
+                <option>Video Recording or DVD</option>
+              </select>
+              <div id="first-row-<%= rowNumber %>">
+                <input id="first-name-<%= rowNumber %>" class="span2" type="text" placeholder="Creator First Name" name="2-<%= rowNumber %>" value="<%= parts[1] %>"></input><input id="last-name-<%= rowNumber %>" class="span2" type="text" placeholder="Creator Last Name" name="3-<%= rowNumber %>" value="<%= parts[2] %>"></input><input id="title-<%= rowNumber %>" class="span3" type="text" placeholder="Description of Media" name="4-<%= rowNumber %>" value="<%= parts[3] %>"></input>
+              </div>
+              <a class="btn delete-btn disabled" href="#" id="delete-btn-<%= rowNumber %>"></span>Delete</a>
+            </div>
+            <div class="controls controls-row">
+              <div id="second-row-<%= rowNumber %>">
+                <input id="format-<%= rowNumber %>" class="span3" type="text" placeholder="Format" name="5-<%= rowNumber %>" value="<%= parts[4] %>"></input><input id="collection-title-<%= rowNumber %>" class="span5" type="text" placeholder="Title of Website" name="6-<%= rowNumber %>" value="<%= parts[5] %>"></input><input id="pub-date-<%= rowNumber %>" class="span2" type="text" placeholder="Date Viewed" name="7-<%= rowNumber %>" value="<%= parts[6] %>"></input>
+              </div>
+              <a class="btn add-btn" href="#" id="add-btn-<%= rowNumber %>"><span class="space"></span>Add a Source</a>
+            </div>
+          </div>
+        <% } else if (parts[0] == 'Interview') { %>
+          <div class="source" id="source-<%= rowNumber %>">
+            <div class="controls controls-row">
+              <select class="span3 type-select" id="type-select-<%= rowNumber %>" name="1-<%= rowNumber %>">
+                <option>Book with an Author</option>
+                <option>Book with an Editor</option>
+                <option>General Encyclopedia</option>
+                <option>Specialty Encyclopedia, Dictionary, or Other Reference Book</option>
+                <option>Multi-Volume Specialty Encyclopedia</option>
+                <option>Magazine or Newspaper</option>
+                <option>Website</option>
+                <option>Media from the Web</option>
+                <option selected="selected">Interview</option>
+                <option>Video Recording or DVD</option>
+              </select>
+              <div id="first-row-<%= rowNumber %>">
+                <input id="first-name-<%= rowNumber %>" class="span3" type="text" placeholder="Interviewee First Name" name="2-<%= rowNumber %>" value="<%= parts[1] %>"></input><input id="last-name-<%= rowNumber %>" class="span4" type="text" placeholder="Interviewee Last Name" name="3-<%= rowNumber %>" value="<%= parts[2] %>"></input>
+              </div>
+              <a class="btn delete-btn disabled" href="#" id="delete-btn-<%= rowNumber %>"></span>Delete</a>
+            </div>
+            <div class="controls controls-row">
+              <div id="second-row-<%= rowNumber %>">
+                <input id="pub-date-<%= rowNumber %>" class="span4" type="text" placeholder="Date of Interview" name="4-<%= rowNumber %>" value="<%= parts[3] %>"></input><input id="format-<%= rowNumber %>" class="span6" type="text" placeholder="Format (leave blank if done in person)" name="5-<%= rowNumber %>" value="<%= parts[4] %>"></input>
+              </div>
+              <a class="btn add-btn" href="#" id="add-btn-<%= rowNumber %>"><span class="space"></span>Add a Source</a>
+            </div>
+          </div>
+        <% } else if (parts[0] == 'Video Recording or DVD') { %>
+          <div class="source" id="source-<%= rowNumber %>">
+            <div class="controls controls-row">
+              <select class="span3 type-select" id="type-select-<%= rowNumber %>" name="1-<%= rowNumber %>">
+                <option>Book with an Author</option>
+                <option>Book with an Editor</option>
+                <option>General Encyclopedia</option>
+                <option>Specialty Encyclopedia, Dictionary, or Other Reference Book</option>
+                <option>Multi-Volume Specialty Encyclopedia</option>
+                <option>Magazine or Newspaper</option>
+                <option>Website</option>
+                <option>Media from the Web</option>
+                <option>Interview</option>
+                <option selected="selected">Video Recording or DVD</option>
+              </select>
+              <div id="first-row-<%= rowNumber %>">
+                <input id="title-<%= rowNumber %>" class="span3" type="text" placeholder="Title of Video" name="2-<%= rowNumber %>" value="<%= parts[1] %>"></input><input id="first-name-<%= rowNumber %>" class="span2" type="text" placeholder="Author First Name" name="3-<%= rowNumber %>" value="<%= parts[2] %>"></input><input id="last-name-<%= rowNumber %>" class="span2" type="text" placeholder="Author Last Name" name="4-<%= rowNumber %>" value="<%= parts[3] %>"></input>
+              </div>
+              <a class="btn delete-btn disabled" href="#" id="delete-btn-<%= rowNumber %>"></span>Delete</a>
+            </div>
+            <div class="controls controls-row">
+              <div id="second-row-<%= rowNumber %>">
+                <input id="pub-name-<%= rowNumber %>" class="span8" type="text" placeholder="Publisher" name="5-<%= rowNumber %>" value="<%= parts[4] %>"></input><input id="pub-date-<%= rowNumber %>" class="span2" type="text" placeholder="Year of Release" name="6-<%= rowNumber %>" value="<%= parts[5] %>"></input>
+              </div>
+              <a class="btn add-btn" href="#" id="add-btn-<%= rowNumber %>"><span class="space"></span>Add a Source</a>
+            </div>
+          </div>
+        <% }
+        }
+        %>
+        </div>
+        <button type="submit" class="btn btn-block"><span class="space"></span>Save Bibliography</button>
+      </form>
+
+  </body>
+  
+  <script src="javascripts/jquery.js"></script>
+  <script src="javascripts/bootstrap.js"></script>
+  <script type="text/javascript">
+    jQuery.fn.selectText = function () {
+      var doc = document;
+      var element = this[0];
+      var range, selection;
+      if (doc.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+      } else if (window.getSelection) {
+        selection = window.getSelection();
+        range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    };
+
+    $(function () {
+      $('#select').click(function () {
+        $('#citation').selectText();
+        return false;
+      });
+
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        $('#select').remove();
+      }
+
+      function reloadButtons() {
+        if ($('.source').length == 1) {
+          $('.delete-btn').addClass('disabled');
+        } else {
+          $('.delete-btn').removeClass('disabled');
+        }
+
+        $('.add-btn').addClass('disabled');
+
+        var lastRowIDParts = $('#sources').children(':last').attr('id').split('-');
+        var lastRowNumber = lastRowIDParts[lastRowIDParts.length - 1];
+
+        $('#add-btn-' + lastRowNumber).removeClass('disabled');
+      }
+
+      reloadButtons();
+
+      $('.main.container').on('click', '.add-btn', function () {
+        if (!($(this).hasClass('disabled'))) {
+          var lastRowIDParts = $('#sources').children(':last').attr('id').split('-');
+          var lastRowNumber = lastRowIDParts[lastRowIDParts.length - 1];
+          var newRowInt = parseInt(lastRowNumber) + 1;
+          var newRowNumber = newRowInt.toString();
+
+          $('#sources').append('<div class="source" id="source-' + newRowNumber + '"><div class="controls controls-row"><select class="span3 type-select" id="type-select-' + newRowNumber + '" name="1-' + newRowNumber + '"><option>Book with an Author</option><option>Book with an Editor</option><option>General Encyclopedia</option><option>Specialty Encyclopedia, Dictionary, or Other Reference Book</option><option>Multi-Volume Specialty Encyclopedia</option><option>Magazine or Newspaper</option><option>Website</option><option>Media from the Web</option><option>Interview</option><option>Video Recording or DVD</option></select><div id="first-row-' + newRowNumber + '"><input id="first-name-' + newRowNumber + '" class="span2" type="text" placeholder="Author First Name" name="2-' + newRowNumber + '"></input><input id="last-name-' + newRowNumber + '" class="span2" type="text" placeholder="Author Last Name" name="3-' + newRowNumber + '"></input><input id="title-' + newRowNumber + '" class="span3" type="text" placeholder="Title" name="4-' + newRowNumber + '"></input></div><a class="btn delete-btn disabled" href="#" id="delete-btn-' + newRowNumber + '"></span>Delete</a></div><div class="controls controls-row"><div id="second-row-' + newRowNumber + '"><input id="pub-city-' + newRowNumber + '" class="span3" type="text" placeholder="Publication City" name="5-' + newRowNumber + '"></input><input id="pub-name-' + newRowNumber + '" class="span5" type="text" placeholder="Publisher" name="6-' + newRowNumber + '"></input><input id="pub-date-' + newRowNumber + '" class="span2" type="text" placeholder="Year of Publication" name="7-' + newRowNumber + '"></input></div><a class="btn add-btn" href="#" id="add-btn-' + newRowNumber + '"><span class="space"></span>Add a Source</a></div>')
+
+          reloadButtons();
+        }
+
+        return false;
+      });
+
+      $('.main.container').on('click', '.delete-btn', function () {
+        if (!($(this).hasClass('disabled'))) {
+          var idParts = $(this).attr('id').split('-');
+          var rowNumber = idParts[idParts.length - 1];
+
+          $('#source-' + rowNumber).remove();
+
+          reloadButtons();
+        }
+
+        return false;
+      });
+
+      $('.main.container').on('change', '.type-select', function () {
+        var idParts = $(this).attr('id').split('-');
+        var rowNumber = idParts[idParts.length - 1];
+
+        var firstName = '';
+        var lastName = '';
+        var title = '';
+        var pubCity = '';
+        var pubName = '';
+        var pubDate = '';
+        var collectionTitle = '';
+        var format = '';
+        var viewDate = '';
+        var pages = '';
+        var volume = '';
+
+        if ($('#first-name-' + rowNumber).length != 0 && $('#first-name-' + rowNumber).val() != '') {
+          firstName = $('#first-name-' + rowNumber).val();
+        }
+        if ($('#last-name-' + rowNumber).length != 0 && $('#last-name-' + rowNumber).val() != '') {
+          lastName = $('#last-name-' + rowNumber).val();
+        }
+        if ($('#title-' + rowNumber).length != 0 && $('#title-' + rowNumber).val() != '') {
+          title = $('#title-' + rowNumber).val();
+        }
+        if ($('#pub-city-' + rowNumber).length != 0 && $('#pub-city-' + rowNumber).val() != '') {
+          pubCity = $('#pub-city-' + rowNumber).val();
+        }
+        if ($('#pub-name-' + rowNumber).length != 0 && $('#pub-name-' + rowNumber).val() != '') {
+          pubName = $('#pub-name-' + rowNumber).val();
+        }
+        if ($('#pub-date-' + rowNumber).length != 0 && $('#pub-date-' + rowNumber).val() != '') {
+          pubDate = $('#pub-date-' + rowNumber).val();
+        }
+        if ($('#collection-title-' + rowNumber).length != 0 && $('#collection-title-' + rowNumber).val() != '') {
+          collectionTitle = $('#collection-title-' + rowNumber).val();
+        }
+        if ($('#format-' + rowNumber).length != 0 && $('#format-' + rowNumber).val() != '') {
+          format = $('#format-' + rowNumber).val();
+        }
+        if ($('#view-date-' + rowNumber).length != 0 && $('#view-date-' + rowNumber).val() != '') {
+          viewDate = $('#view-date-' + rowNumber).val();
+        }
+        if ($('#pages-' + rowNumber).length != 0 && $('#pages-' + rowNumber).val() != '') {
+          pages = $('#pages-' + rowNumber).val();
+        }
+        if ($('#volume-' + rowNumber).length != 0 && $('#volume-' + rowNumber).val() != '') {
+          volume = $('#volume-' + rowNumber).val();
+        }
+
+        if ($(this).val() == 'Book with an Author') {
+          $('#first-row-' + rowNumber).html('<input id="first-name-' + rowNumber + '" class="span2" type="text" placeholder="Author First Name" name="2-' + rowNumber + '" value="' + firstName + '"></input><input id="last-name-' + rowNumber + '" class="span2" type="text" placeholder="Author Last Name" name="3-' + rowNumber + '" value="' + lastName + '"></input><input id="title-' + rowNumber + '" class="span3" type="text" placeholder="Title" name="4-' + rowNumber + '" value="' + title + '"></input>');
+          $('#second-row-' + rowNumber).html('<input id="pub-city-' + rowNumber + '" class="span3" type="text" placeholder="Publication City" name="5-' + rowNumber + '" value="' + pubCity + '"></input><input id="pub-name-' + rowNumber + '" class="span5" type="text" placeholder="Publisher" name="6-' + rowNumber + '" value="' + pubName + '"></input><input id="pub-date-' + rowNumber + '" class="span2" type="text" placeholder="Year of Publication" name="7-' + rowNumber + '" value="' + pubDate + '"></input>');
+        } else if ($(this).val() == 'Book with an Editor') {
+          $('#first-row-' + rowNumber).html('<input id="first-name-' + rowNumber + '" class="span2" type="text" placeholder="Editor First Name" name="2-' + rowNumber + '" value="' + firstName + '"></input><input id="last-name-' + rowNumber + '" class="span2" type="text" placeholder="Editor Last Name" name="3-' + rowNumber + '" value="' + lastName + '"></input><input id="title-' + rowNumber + '" class="span3" type="text" placeholder="Title" name="4-' + rowNumber + '" value="' + title + '"></input>');
+          $('#second-row-' + rowNumber).html('<input id="pub-city-' + rowNumber + '" class="span3" type="text" placeholder="Publication City" name="5-' + rowNumber + '" value="' + pubCity + '"></input><input id="pub-name-' + rowNumber + '" class="span5" type="text" placeholder="Publisher" name="6-' + rowNumber + '" value="' + pubName + '"></input><input id="pub-date-' + rowNumber + '" class="span2" type="text" placeholder="Year of Publication" name="7-' + rowNumber + '" value="' + pubDate + '"></input>');
+        } else if ($(this).val() == 'General Encyclopedia') {
+          $('#first-row-' + rowNumber).html('<input id="title-' + rowNumber + '" class="span7" type="text" placeholder="Title of Article" name="2-' + rowNumber + '" value="' + title + '"></input>');
+          $('#second-row-' + rowNumber).html('<input id="collection-title-' + rowNumber + '" class="span8" type="text" placeholder="Title of Encyclopedia" name="3-' + rowNumber + '" value="' + collectionTitle + '"></input><input id="pub-date-' + rowNumber + '" class="span2" type="text" placeholder="Year of Publication" name="4-' + rowNumber + '" value="' + pubDate + '"></input>');
+        } else if ($(this).val() == 'Specialty Encyclopedia, Dictionary, or Other Reference Book') {
+          $('#first-row-' + rowNumber).html('<input id="first-name-' + rowNumber + '" class="span2" type="text" placeholder="Author First Name" name="2-' + rowNumber + '" value="' + firstName + '"></input><input id="last-name-' + rowNumber + '" class="span2" type="text" placeholder="Author Last Name" name="3-' + rowNumber + '" value="' + lastName + '"></input><input id="title-' + rowNumber + '" class="span3" type="text" placeholder="Title of Article" name="4-' + rowNumber + '" value="' + title + '"></input>');
+          $('#second-row-' + rowNumber).html('<input id="collection-title-' + rowNumber + '" class="span3" type="text" placeholder="Title of Reference Book" name="5-' + rowNumber + '" value="' + collectionTitle + '"></input><input id="pub-city-' + rowNumber + '" class="span2" type="text" placeholder="Publication City" name="6-' + rowNumber + '" value="' + pubCity + '"></input><input id="pub-name-' + rowNumber + '" class="span3" type="text" placeholder="Publisher" name="7-' + rowNumber + '" value="' + pubName + '"></input><input id="pub-date-' + rowNumber + '" class="span2" type="text" placeholder="Year of Publication" name="8-' + rowNumber + '" value="' + pubDate + '"></input>');
+        } else if ($(this).val() == 'Multi-Volume Specialty Encyclopedia') {
+          $('#first-row-' + rowNumber).html('<input id="first-name-' + rowNumber + '" class="span2" type="text" placeholder="Author First Name" name="2-' + rowNumber + '" value="' + firstName + '"></input><input id="last-name-' + rowNumber + '" class="span2" type="text" placeholder="Author Last Name" name="3-' + rowNumber + '" value="' + lastName + '"></input><input id="title-' + rowNumber + '" class="span3" type="text" placeholder="Title of Article" name="4-' + rowNumber + '" value="' + title + '"></input>');
+          $('#second-row-' + rowNumber).html('<input id="pub-city-' + rowNumber + '" class="span2" type="text" placeholder="Publication City" name="5-' + rowNumber + '" value="' + pubCity + '"></input><input id="pub-name-' + rowNumber + '" class="span2" type="text" placeholder="Publisher" name="6-' + rowNumber + '" value="' + pubName + '"></input><input id="pub-date-' + rowNumber + '" class="span2" type="text" placeholder="Year of Publication" name="7-' + rowNumber + '" value="' + pubDate + '"></input><input id="volume-' + rowNumber + '" class="span2" type="text" placeholder="Volume" name="8-' + rowNumber + '" value="' + volume + '"></input><input id="collection-title-' + rowNumber + '" class="span2" type="text" placeholder="Title of Series" name="9-' + rowNumber + '" value="' + collectionTitle + '"></input>');
+        } else if ($(this).val() == 'Magazine or Newspaper') {
+          $('#first-row-' + rowNumber).html('<input id="first-name-' + rowNumber + '" class="span2" type="text" placeholder="Author First Name" name="2-' + rowNumber + '" value="' + firstName + '"></input><input id="last-name-' + rowNumber + '" class="span2" type="text" placeholder="Author Last Name" name="3-' + rowNumber + '" value="' + lastName + '"></input><input id="title-' + rowNumber + '" class="span3" type="text" placeholder="Title of Article" name="4-' + rowNumber + '" value="' + title + '"></input>');
+          $('#second-row-' + rowNumber).html('<input id="collection-title-' + rowNumber + '" class="span5" type="text" placeholder="Title of Magazine" name="5-' + rowNumber + '" value="' + collectionTitle + '"></input><input id="pub-date-' + rowNumber + '" class="span3" type="text" placeholder="Date Published" name="6-' + rowNumber + '" value="' + pubDate + '"></input><input id="pages-' + rowNumber + '" class="span2" type="text" placeholder="Page Numbers" name="7-' + rowNumber + '" value="' + pages + '"></input>');
+        } else if ($(this).val() == 'Website') {
+          $('#first-row-' + rowNumber).html('<input id="first-name-' + rowNumber + '" class="span2" type="text" placeholder="Creator First Name" name="2-' + rowNumber + '" value="' + firstName + '"></input><input id="last-name-' + rowNumber + '" class="span2" type="text" placeholder="Creator Last Name" name="3-' + rowNumber + '" value="' + lastName + '"></input><input id="title-' + rowNumber + '" class="span3" type="text" placeholder="Title of Page" name="4-' + rowNumber + '" value="' + title + '"></input>');
+          $('#second-row-' + rowNumber).html('<input id="collection-title-' + rowNumber + '" class="span3" type="text" placeholder="Title of Website" name="5-' + rowNumber + '" value="' + collectionTitle + '"></input><input id="pub-date-' + rowNumber + '" class="span2" type="text" placeholder="Date Last Updated" name="6-' + rowNumber + '" value="' + pubDate + '"></input><input id="pub-name-' + rowNumber + '" class="span3" type="text" placeholder="Organization Responsible" name="7-' + rowNumber + '" value="' + pubName + '"></input><input id="view-date-' + rowNumber + '" class="span2" type="text" placeholder="Date Viewed" name="8-' + rowNumber + '" value="' + viewDate + '"></input>');
+        } else if ($(this).val() == 'Media from the Web') {
+          $('#first-row-' + rowNumber).html('<input id="first-name-' + rowNumber + '" class="span2" type="text" placeholder="Creator First Name" name="2-' + rowNumber + '" value="' + firstName + '"></input><input id="last-name-' + rowNumber + '" class="span2" type="text" placeholder="Creator Last Name" name="3-' + rowNumber + '" value="' + lastName + '"></input><input id="title-' + rowNumber + '" class="span3" type="text" placeholder="Description of Media" name="4-' + rowNumber + '" value="' + title + '"></input>');
+          $('#second-row-' + rowNumber).html('<input id="format-' + rowNumber + '" class="span3" type="text" placeholder="Format" name="5-' + rowNumber + '" value="' + format + '"></input><input id="collection-title-' + rowNumber + '" class="span5" type="text" placeholder="Title of Website" name="6-' + rowNumber + '" value="' + collectionTitle + '"></input><input id="pub-date-' + rowNumber + '" class="span2" type="text" placeholder="Date Viewed" name="7-' + rowNumber + '" value="' + pubDate + '"></input>');
+        } else if ($(this).val() == 'Interview') {
+          $('#first-row-' + rowNumber).html('<input id="first-name-' + rowNumber + '" class="span3" type="text" placeholder="Interviewee First Name" name="2-' + rowNumber + '" value="' + firstName + '"></input><input id="last-name-' + rowNumber + '" class="span4" type="text" placeholder="Interviewee Last Name" name="3-' + rowNumber + '" value="' + lastName + '"></input>');
+          $('#second-row-' + rowNumber).html('<input id="pub-date-' + rowNumber + '" class="span4" type="text" placeholder="Date of Interview" name="4-' + rowNumber + '" value="' + pubDate + '"></input><input id="format-' + rowNumber + '" class="span6" type="text" placeholder="Format (leave blank if done in person)" name="5-' + rowNumber + '" value="' + format + '"></input>');
+        } else if ($(this).val() == 'Video Recording or DVD') {
+          $('#first-row-' + rowNumber).html('<input id="title-' + rowNumber + '" class="span3" type="text" placeholder="Title of Video" name="2-' + rowNumber + '" value="' + title + '"></input><input id="first-name-' + rowNumber + '" class="span2" type="text" placeholder="Author First Name" name="3-' + rowNumber + '" value="' + firstName + '"></input><input id="last-name-' + rowNumber + '" class="span2" type="text" placeholder="Author Last Name" name="4-' + rowNumber + '" value="' + lastName + '"></input>');
+          $('#second-row-' + rowNumber).html('<input id="pub-name-' + rowNumber + '" class="span8" type="text" placeholder="Publisher" name="5-' + rowNumber + '" value="' + pubName + '"></input><input id="pub-date-' + rowNumber + '" class="span2" type="text" placeholder="Year of Release" name="6-' + rowNumber + '" value="' + pubDate + '"></input>');
+        }
+      });
+    });
+  </script>
+  
+</html>
