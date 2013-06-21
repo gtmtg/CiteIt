@@ -22,56 +22,66 @@ app.use('/fonts', express.static(__dirname + '/fonts'));
 
 //  Frontend
 app.get('/', function (request, response) {
-  response.render(__dirname + '/index.ejs');
+  if (request.headers.host == 'www.citeit.co') {
+    response.render(__dirname + '/index.ejs');
+  } else {
+    response.redirect('http://www.citeit.co');
+  }
 });
 
 app.get('/:bibliography', function (request, response) {
-  if (/^[\w-]+$/.test(request.params.bibliography) == true) {
-    var date = new Date();
+  var name = request.params.bibliography;
 
-    db.citeit.first({
-      _id: request.params.bibliography
-    }, function (error, value) {
-      if (!value) {
-        // Create the bibliography
-        var newValue = {
-          _id: request.params.bibliography,
-          sources: 'Book with an Author|||||||',
-          citation: '',
-          lastViewed: getStringFromDate(date),
-        };
-        db.citeit.insert(newValue, function (returnedError, returnedValue) {
-          if (returnedError) {
-            response.redirect('/');
-          } else {
-            response.render(__dirname + '/bibliography.ejs', {
-              bibliography: newValue
-            });
-          }
-        });
-      } else if (error) {
-        // Database error; go to home page
-        response.redirect('/');
-      } else {
-        // Render the bibliography
-        response.render(__dirname + '/bibliography.ejs', {
-          bibliography: value
-        });
+  if (request.headers.host == 'www.citeit.co') {
+    if (/^[\w-]+$/.test(name)) {
+      var date = new Date();
 
-        // Update the last viewed date in the database
-        db.citeit.update({
-          _id: request.params.bibliography
-        }, {
-          $set: {
+      db.citeit.first({
+        _id: name
+      }, function (error, value) {
+        if (!value) {
+          // Create the bibliography
+          var newValue = {
+            _id: name,
+            sources: 'Book with an Author|||||||',
+            citation: '',
             lastViewed: getStringFromDate(date),
-          }
-        }, function (returnedError, returnedValue) {
-          // Empty callback
-        });
-      }
-    });
+          };
+          db.citeit.insert(newValue, function (returnedError, returnedValue) {
+            if (returnedError) {
+              response.redirect('/');
+            } else {
+              response.render(__dirname + '/bibliography.ejs', {
+                bibliography: newValue
+              });
+            }
+          });
+        } else if (error) {
+          // Database error; go to home page
+          response.redirect('/');
+        } else {
+          // Render the bibliography
+          response.render(__dirname + '/bibliography.ejs', {
+            bibliography: value
+          });
+
+          // Update the last viewed date in the database
+          db.citeit.update({
+            _id: name
+          }, {
+            $set: {
+              lastViewed: getStringFromDate(date),
+            }
+          }, function (returnedError, returnedValue) {
+            // Empty callback
+          });
+        }
+      });
+    } else {
+      response.send(404);
+    }
   } else {
-    response.send(404);
+    response.redirect('http://www.citeit.co/' + name);
   }
 });
 
@@ -121,7 +131,7 @@ app.post('/save', function (request, response) {
   }, function (error, value) {
     // Redirect to the bibliography page. If updating was successful, the changes
     // will be shown; if not, the old version of the bibliography will be shown.
-    response.redirect('/' + name);
+    response.redirect('http://www.citeit.co/' + name);
   });
 });
 
@@ -428,11 +438,6 @@ function getStringFromDate(date) {
 
   return monthString + '-' + dateString + '-' + yearString;
 }
-
-// Redirect all 404 requests to main page
-app.get('*', function (request, response) {
-  response.send(404);
-});
 
 // Start the app
 var port = process.env.PORT || 3000;
