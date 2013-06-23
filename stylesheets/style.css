@@ -25,13 +25,7 @@
   src: url('../fonts/ProximaNova-Semibold.ttf');
   font-weight: 500;
 }
-@font-face {
-  font-family: 'ProximaNova';
-  src: url('../fonts/ProximaNova-Bold.ttf');
-  font-weight: bold;
-}
 body {
-  color: #555;
   font-family: 'ProximaNova', sans-serif;
 }
 .block.container {
@@ -45,10 +39,6 @@ body {
   font-size: 20px;
   line-height: 20px;
   margin-bottom: 30px;
-}
-.block.container img {
-  margin: 30px 0 30px 0;
-  border-radius: 8px;
 }
 .block.container input {
   border-radius: 8px 0 0 8px !important;
@@ -73,7 +63,6 @@ body {
 }
 .bottom p {
   color: #cacaca;
-  font-weight: 400;
   font-size: 14px;
   line-height: 14px;
 }
@@ -93,7 +82,7 @@ body {
   cursor: pointer;
 }
 .top h1 {
-  font-weight: 400;
+  font-weight: normal;
   text-align: center;
   font-size: 22px;
   line-height: 22px;
@@ -144,4 +133,7 @@ input, button, select {
 .instructions {
   font-size: 14px;
   margin-left: 12px;
+}
+.modal-header {
+  font-weight: 500;
 }
