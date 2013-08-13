@@ -20,12 +20,7 @@
   font-weight: 300;
   font-style: italic;
 }
-@font-face {
-  font-family: 'ProximaNova';
-  src: url('../fonts/ProximaNova-Semibold.ttf');
-  font-weight: 500;
-}
-body {
+body, input, button, select {
   font-family: 'ProximaNova', sans-serif;
 }
 .block.container {
@@ -74,9 +69,9 @@ body {
   background: #c40000;
   background-image: -webkit-linear-gradient(top, #dd0000 0, #aa0000 100%);
   background-image: linear-gradient(top, #dd0000 0, #aa0000 100%);
-  padding: 10px 0 10px 0;
+  padding: 7px 0 4px 0;
   min-width: 940px;
-  border-bottom: 6px solid #990000;
+  border-bottom: 4px solid #990000;
 }
 #top-link .top {
   cursor: pointer;
@@ -90,9 +85,6 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-input, button, select {
-  font-family: inherit;
 }
 #citation {
   word-break: normal;
@@ -135,5 +127,8 @@ input, button, select {
   margin-left: 12px;
 }
 .modal-header {
-  font-weight: 500;
+  font-weight: normal;
+}
+.modal-footer {
+  background: #fff;
 }
