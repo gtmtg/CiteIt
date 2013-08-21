@@ -1,12 +1,14 @@
 #!/bin/env node
 
-//  Require modules
+// Require modules
+
 var monitor = require('strong-agent').profile('46bfe727acba761220f8a167601e0ff8', 'CiteIt');
 var express = require('express');
 var app = express();
 var db = require('mongo-lite').connect('mongodb://' + process.env.MONGO_USERNAME + ':' + process.env.MONGO_PASSWORD + '@dharma.mongohq.com:10042/CiteIt', ['citeit']);
 
-//  Configuration
+// Configuration
+
 app.configure(function () {
   app.set('view engine', 'ejs');
   app.use(express.bodyParser());
@@ -19,9 +21,9 @@ app.set('view options', {
 
 app.use('/javascripts', express.static(__dirname + '/javascripts'));
 app.use('/stylesheets', express.static(__dirname + '/stylesheets'));
-app.use('/fonts', express.static(__dirname + '/fonts'));
 
-//  Frontend
+// Frontend
+
 app.get('/', function (request, response) {
   if (request.headers.host == 'www.citeit.co') {
     response.render(__dirname + '/index.ejs');
@@ -86,7 +88,8 @@ app.get('/:bibliography', function (request, response) {
   }
 });
 
-//  Backend
+// Backend
+
 app.post('/save', function (request, response) {
   // Create an object with all of the sources
   var rawSources = request.body;
@@ -137,7 +140,6 @@ app.post('/save', function (request, response) {
 });
 
 // Generate a citation given a source string
-
 function generateCitation(sourcesString) {
   // Split the string into individual source strings
   var sources = sourcesString.split('~');
@@ -386,7 +388,6 @@ function generateCitation(sourcesString) {
 }
 
 // Check if a citation is blank
-
 function checkIfBlank(partsArray) {
   // Set is blank initially to true. If any element in partsArray is not empty,
   // the execution of the loop will be broken and the loop will return true;
@@ -405,7 +406,6 @@ function checkIfBlank(partsArray) {
 }
 
 // Sort the citations alphabetically
-
 function sortCitations(citationsArray) {
   // Iterate through the citations and generate an array of objects for sorting
   var arrayToSort = new Array();

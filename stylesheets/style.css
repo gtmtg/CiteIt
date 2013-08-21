@@ -1,35 +1,17 @@
-@font-face {
-  font-family: 'ProximaNova';
-  src: url('../fonts/ProximaNova.ttf');
-  font-weight: normal;
-}
-@font-face {
-  font-family: 'ProximaNova';
-  src: url('../fonts/ProximaNova-Italic.ttf');
-  font-weight: normal;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'ProximaNova';
-  src: url('../fonts/ProximaNova-Light.ttf');
-  font-weight: 300;
-}
-@font-face {
-  font-family: 'ProximaNova';
-  src: url('../fonts/ProximaNova-LightItalic.ttf');
-  font-weight: 300;
-  font-style: italic;
-}
+@import url("http://fnt.webink.com/wfs/webink.css/?project=9D14C09E-7042-43DD-A9DA-C02EAAB54F03&fonts=58DEFEBD-4A55-477B-3C13-525C6AEBDD7A:f=ProximaNova-Regular,C88A28DF-0112-63D9-25D2-A4EA08DAF75B:f=ProximaNova-Light");
+
 body, input, button, select {
-  font-family: 'ProximaNova', sans-serif;
+  font-family: 'ProximaNova-Regular', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 .block.container {
   margin: 0 auto 0 auto;
-  padding: 160px 135px 160px 135px;
-  width: 670px;
+  padding: 160px 130px 160px 130px;
+  width: 680px;
 }
 .block h1 {
-  font-weight: 300;
+  font-family: "ProximaNova-Light";
+  font-weight: normal;
   text-align: center;
   font-size: 20px;
   line-height: 20px;
@@ -37,14 +19,14 @@ body, input, button, select {
 }
 .block.container input {
   border-radius: 8px 0 0 8px !important;
-  width: 554px;
-  font-weight: 300;
+  width: 564px;
+  font-family: "ProximaNova-Light";
   font-size: 20px !important;
   line-height: 25px;
   padding: 18px 14px 18px 14px !important;
 }
 .block.container button {
-  font-weight: 300;
+  font-family: "ProximaNova-Light";
   font-size: 20px !important;
   padding: 18px 14px 18px 14px !important;
   border-radius: 0 8px 8px 0 !important;
@@ -126,7 +108,7 @@ body, input, button, select {
   font-size: 14px;
   margin-left: 12px;
 }
-.modal-header {
+.modal-header h3 {
   font-weight: normal;
 }
 .modal-footer {
