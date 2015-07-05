@@ -12,7 +12,7 @@
   "dependencies": {
     "express": "3.x",
     "ejs": "*",
-    "mongo-lite": "*",
+    "mongo-lite": "*"
   },
   "private": true,
   "main": "server.js"
