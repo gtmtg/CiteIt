@@ -2,7 +2,6 @@
 
 // Require modules
 
-var monitor = require('strong-agent').profile('46bfe727acba761220f8a167601e0ff8', 'CiteIt');
 var express = require('express');
 var app = express();
 var db = require('mongo-lite').connect('mongodb://' + process.env.MONGO_USERNAME + ':' + process.env.MONGO_PASSWORD + '@dharma.mongohq.com:10042/CiteIt', ['citeit']);
