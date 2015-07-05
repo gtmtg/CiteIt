@@ -25,17 +25,17 @@ app.use('/stylesheets', express.static(__dirname + '/stylesheets'));
 // Frontend
 
 app.get('/', function (request, response) {
-  if (request.headers.host == 'www.citeit.co') {
+  if (request.headers.host == 'citeit.herokuapp.com') {
     response.render(__dirname + '/index.ejs');
   } else {
-    response.redirect('http://www.citeit.co');
+    response.redirect('http://citeit.herokuapp.com');
   }
 });
 
 app.get('/:bibliography', function (request, response) {
   var name = request.params.bibliography;
 
-  if (request.headers.host == 'www.citeit.co') {
+  if (request.headers.host == 'citeit.herokuapp.com') {
     if (/^[\w-]+$/.test(name)) {
       var date = new Date();
 
@@ -84,7 +84,7 @@ app.get('/:bibliography', function (request, response) {
       response.send(404);
     }
   } else {
-    response.redirect('http://www.citeit.co/' + name);
+    response.redirect('http://citeit.herokuapp.com/' + name);
   }
 });
 
@@ -135,7 +135,7 @@ app.post('/save', function (request, response) {
   }, function (error, value) {
     // Redirect to the bibliography page. If updating was successful, the changes
     // will be shown; if not, the old version of the bibliography will be shown.
-    response.redirect('http://www.citeit.co/' + name);
+    response.redirect('http://citeit.herokuapp.com/' + name);
   });
 });
 
